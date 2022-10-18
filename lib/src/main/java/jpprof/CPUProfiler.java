@@ -15,7 +15,7 @@ public class CPUProfiler {
     public static void Start(Duration duration, OutputStream out) throws IOException, InterruptedException {
         var jfrFile = File.createTempFile("jpprof", "jfr");
         AsyncProfiler.getInstance().execute(buildStartCommand(jfrFile.getAbsolutePath()));
-        Thread.sleep(duration);
+        Thread.sleep(duration.toMillis());
         AsyncProfiler.getInstance().stop();
         try (var jfrReader = new JfrReader(jfrFile.getAbsolutePath());
                 var outgzip = new GZIPOutputStream(out);) {
