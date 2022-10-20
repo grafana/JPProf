@@ -73,6 +73,12 @@ public class JfrReader implements Closeable {
     private int activeSetting;
     private boolean activeSettingHasStack;
 
+    /**
+     * Opens a JFR file for reading.
+     *
+     * @param fileName path to the JFR file
+     * @throws IOException if the file cannot be opened
+     */
     public JfrReader(String fileName) throws IOException {
         this.ch = FileChannel.open(Paths.get(fileName), StandardOpenOption.READ);
         this.buf = ByteBuffer.allocateDirect(BUFFER_SIZE);

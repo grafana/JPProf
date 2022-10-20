@@ -10,8 +10,18 @@ import one.jfr.JfrReader;
 import one.profiler.AsyncProfiler;
 import one.profiler.Events;
 
+/**
+ * CPUProfiler is a CPU profiler.
+ */
 public class CPUProfiler {
 
+    /**
+     * Start a CPU profile.
+     *
+     * @param duration the duration of the profile
+     * @param out      the output stream
+     * @throws IOException if an I/O error occurs
+     */
     public static void Start(Duration duration, OutputStream out) throws IOException, InterruptedException {
         var jfrFile = File.createTempFile("jpprof", "jfr");
         AsyncProfiler.getInstance().execute(buildStartCommand(jfrFile.getAbsolutePath()));

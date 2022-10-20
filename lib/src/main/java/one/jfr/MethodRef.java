@@ -21,6 +21,13 @@ public class MethodRef {
     public final long name;
     public final long sig;
 
+    /**
+     * Create a new method reference
+     *
+     * @param cls  class reference
+     * @param name method name
+     * @param sig  method signature
+     */
     public MethodRef(long cls, long name, long sig) {
         this.cls = cls;
         this.name = name;

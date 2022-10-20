@@ -9,11 +9,23 @@ import com.google.common.base.Splitter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * PprofHttpHandler is a HTTP handler for pprof endpoints.
+ */
 public class PprofHttpHandler implements HttpHandler {
 
+    /**
+     * Creates a new PprofHttpHandler.
+     */
     public PprofHttpHandler() {
     }
 
+    /**
+     * Handle a HTTP request.
+     *
+     * @param t the HTTP exchange
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     public void handle(HttpExchange t) throws IOException {
 

@@ -16,7 +16,11 @@
 
 package one.jfr.event;
 
+/**
+ * AllocationSample event
+ */
 public class AllocationSample extends Event {
+
     public final int classId;
     public final long allocationSize;
     public final long tlabSize;
