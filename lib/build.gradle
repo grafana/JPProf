@@ -10,11 +10,22 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+
 }
+def jpprofVersion = project.properties['jpprof_version']
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 dependencies {
@@ -38,4 +49,70 @@ testing {
             useJUnit('4.13.2')
         }
     }
+}
+
+shadowJar {
+    exclude 'Log4j-*'
+    exclude 'META-INF/org/apache/logging/log4j/**'
+    exclude 'META-INF/services/**'
+
+    // from("$buildDir/async-profiler/native") {
+    //     include "**.so"
+    //     include "**.so.sha1"
+    // }
+
+    archiveFileName = "jpprof.jar"
+
+    minimize()
+    archiveClassifier.set('')
+
+}
+
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+            groupId = 'com.grafana'
+            artifactId = 'jpprof'
+            version = jpprofVersion
+            artifacts = [ shadowJar, javadocJar, sourcesJar ]
+            pom {
+                name = 'Java PProf'
+                description = 'Go Pprof but for Java runtime.'
+                url = 'https://grafana.com'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'ctovena'
+                        name = 'Grafana Labs'
+                        email = 'cyril.tovena@grafana.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/grafana/jpprof.git'
+                    developerConnection = 'scm:git:ssh://github.com/grafana/jpprof.git'
+                    url = 'https://github.com/grafana/jpprof'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username project.hasProperty('nexusUsername') ? project.nexusUsername : ''
+                password project.hasProperty('nexusPassword') ? project.nexusPassword : ''
+            }
+            url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.shadow
 }
