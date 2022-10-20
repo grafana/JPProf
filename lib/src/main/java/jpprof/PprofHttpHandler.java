@@ -43,7 +43,7 @@ public class PprofHttpHandler implements HttpHandler {
             t.getRequestBody().close();
             t.getResponseHeaders().set("Content-Encoding", "gzip");
             t.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-            CPUProfiler.Start(duration, t.getResponseBody());
+            CPUProfiler.start(duration, t.getResponseBody());
         } catch (Exception e) {
             t.sendResponseHeaders(500, 0);
             return;
