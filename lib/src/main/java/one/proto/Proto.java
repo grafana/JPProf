@@ -26,6 +26,11 @@ public class Proto {
     private byte[] buf;
     private int pos;
 
+    /**
+     * Create a new Protobuf writer
+     *
+     * @param capacity initial buffer size
+     */
     public Proto(int capacity) {
         this.buf = new byte[capacity];
     }

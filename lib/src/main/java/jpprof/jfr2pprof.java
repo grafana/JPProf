@@ -90,7 +90,13 @@ public class jfr2pprof {
     public static final int FUNCTION_ID = 1;
     public static final int FUNCTION_NAME = 2;
 
-    // `Proto` instances are mutable, careful with reordering
+    /**
+     * Convert a JFR file to pprof
+     *
+     * @param reader JFR reader
+     * @param out    output stream
+     * @throws IOException if an I/O error occurs
+     */
     public static void Convert(final JfrReader reader, final OutputStream out) throws IOException {
         // Mutable IDs, need to start at 1
         int functionId = 1;
