@@ -1,4 +1,4 @@
-package example;
+package com.example.springboot;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,7 +15,7 @@ public class Something extends Thread {
     }
 
     private static void doSomething() {
-        var i = 0;
+        int i = 0;
         for (;;) {
             i++;
             if (i % 3 == 0) {
@@ -35,8 +35,8 @@ public class Something extends Thread {
 
     private static void funcBaz() {
         try {
-            var f = File.createTempFile("foo", "bar");
-            var w = new FileWriter(f);
+            File f = File.createTempFile("foo", "bar");
+            FileWriter w = new FileWriter(f);
             w.write("hello");
             w.close();
             f.delete();

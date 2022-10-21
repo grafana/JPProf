@@ -4,3 +4,7 @@
 # Ignore Gradle build output directory
 build
 bin
+
+.vscode
+
+.DS_Store

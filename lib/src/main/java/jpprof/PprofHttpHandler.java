@@ -38,7 +38,7 @@ public class PprofHttpHandler implements HttpHandler {
         }
         final Map<String, String> map = Splitter.on('&').trimResults().withKeyValueSeparator('=')
                 .split(t.getRequestURI().getRawQuery());
-        var duration = Duration.ofSeconds(Integer.parseInt(map.get("seconds")));
+        Duration duration = Duration.ofSeconds(Integer.parseInt(map.get("seconds")));
         try {
             t.getRequestBody().close();
             t.getResponseHeaders().set("Content-Encoding", "gzip");

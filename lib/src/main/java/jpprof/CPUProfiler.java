@@ -38,14 +38,14 @@ public class CPUProfiler {
      * @throws IOException if an I/O error occurs
      */
     public static void start(Duration duration, OutputStream out) throws IOException, InterruptedException {
-        var jfrFile = File.createTempFile("profile-", "jfr", tmpDir);
-        var instance = AsyncProfiler.getInstance(nativeLibPath);
+        File jfrFile = File.createTempFile("profile-", "jfr", tmpDir);
+        AsyncProfiler instance = AsyncProfiler.getInstance(nativeLibPath);
         instance.execute(buildStartCommand(jfrFile.getAbsolutePath()));
         Thread.sleep(duration.toMillis());
         instance.stop();
 
-        try (var jfrReader = new JfrReader(jfrFile.getAbsolutePath());
-                var outgzip = new GZIPOutputStream(out);) {
+        try (JfrReader jfrReader = new JfrReader(jfrFile.getAbsolutePath());
+                OutputStream outgzip = new GZIPOutputStream(out);) {
             jfr2pprof.Convert(jfrReader, outgzip);
         }
         jfrFile.delete();
