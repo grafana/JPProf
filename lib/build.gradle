@@ -90,7 +90,7 @@ publishing {
                 developers {
                     developer {
                         id = 'ctovena'
-                        name = 'Grafana Labs'
+                        name = 'Cyril Tovena'
                         email = 'cyril.tovena@grafana.com'
                     }
                 }
