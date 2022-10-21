@@ -24,15 +24,7 @@ public class CPUProfiler {
     static {
         try {
             tmpDir = Files.createTempDirectory("jpprof-").toFile();
-
-            InputStream res = CPUProfiler.class.getResourceAsStream("/natives/libasyncProfiler.so");
-            if (res == null) {
-                throw new Exception("native lib not found");
-            }
-
-            Path nativeLibTargetPath = new File(tmpDir, "libasyncProfiler.so").toPath();
-            Files.copy(res, nativeLibTargetPath, StandardCopyOption.REPLACE_EXISTING);
-            nativeLibPath = nativeLibTargetPath.toString();
+            nativeLibPath = copyLibrary();
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
@@ -57,6 +49,59 @@ public class CPUProfiler {
             jfr2pprof.Convert(jfrReader, outgzip);
         }
         jfrFile.delete();
+    }
+
+    /**
+     * Copy the embedded native async-profiler library to
+     * a tmp path, and returns the absolute path.
+     */
+    private static String copyLibrary() throws Exception {
+        String osName = System.getProperty("os.name").toLowerCase();
+        String osArch = System.getProperty("os.arch").toLowerCase();
+
+        String embeddedLibPrefix = "/async-profiler-libs/libasyncProfiler";
+        String embeddedLibSuffix = "";
+
+        switch (osName) {
+            case "linux":
+                switch (osArch) {
+                    case "amd64":
+                        embeddedLibSuffix = "-linux-x64.so";
+                        break;
+
+                    case "aarch64":
+                        embeddedLibSuffix = "-linux-arm64.so";
+                        break;
+
+                    default:
+                        throw new Exception("Unsupported Linux arch: " + osArch);
+                }
+                break;
+
+            case "mac os x":
+                switch (osArch) {
+                    case "x86_64":
+                    case "aarch64":
+                        embeddedLibSuffix = "-macos.so";
+                        break;
+
+                    default:
+                        throw new Exception("Unsupported OSX arch: " + osArch);
+                }
+                break;
+
+            default:
+                throw new Exception("Unsupported OS: " + osName);
+        }
+
+        InputStream is = CPUProfiler.class.getResourceAsStream(embeddedLibPrefix + embeddedLibSuffix);
+        if (is == null) {
+            throw new Exception("native lib not found");
+        }
+
+        Path libCopyPath = new File(tmpDir, "libasyncProfiler.so").toPath().toAbsolutePath();
+        Files.copy(is, libCopyPath, StandardCopyOption.REPLACE_EXISTING);
+        return libCopyPath.toString();
     }
 
     private static String buildStartCommand(String dst) {

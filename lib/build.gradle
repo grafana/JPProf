@@ -29,7 +29,8 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:31.0.1-jre'
-    implementation 'tools.profiler:async-profiler:1.8.3'
+    implementation files('async-profiler-2.8.3/async-profiler.jar')
+    implementation files('async-profiler-2.8.3/converter.jar')
 }
 
 tasks.withType(Test) {
@@ -48,10 +49,11 @@ testing {
 
 shadowJar {
     exclude 'example'
+    exclude '**.html'
 
-    from("natives") {
+    from("async-profiler-2.8.3") {
         include "**.so"
-        into "natives"
+        into "async-profiler-libs"
     }
 
     archiveBaseName.set('jpprof')
