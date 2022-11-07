@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.time.Duration;
 
 import jpprof.CPUProfiler;
@@ -16,9 +15,9 @@ public class PprofController {
 
   @GetMapping("/debug/pprof/profile")
   @ResponseBody
-  public void profile(@RequestParam(required = false) String seconds, HttpServletResponse response) {
+  public void profile(@RequestParam(required = false) Long seconds, HttpServletResponse response) {
     try {
-      Duration d = Duration.ofSeconds(Integer.parseInt(seconds));
+      Duration d = Duration.ofSeconds(seconds);
       CPUProfiler.start(d, response.getOutputStream());
       response.flushBuffer();
     } catch (Exception e) {
