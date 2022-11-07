@@ -44,9 +44,9 @@ jobs:
       - name: Publish package
         uses: gradle/gradle-build-action@v2.3.3
         with:
-          arguments: publishToSonatype closeAndReleaseStagingRepository
+          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
         env:
-          ORG_GRADLE_PROJECT_NEXUSUSERNAME: ${{ secrets.ORG_GRADLE_PROJECT_NEXUSUSERNAME }}
-          ORG_GRADLE_PROJECT_NEXUSPASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_NEXUSPASSWORD }}
-          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGKEY }}
-          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
