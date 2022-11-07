@@ -44,7 +44,7 @@ jobs:
       - name: Publish package
         uses: gradle/gradle-build-action@v2.3.3
         with:
-          arguments: publish
+          arguments: publishToSonatype closeAndReleaseStagingRepository
         env:
           ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.ORG_GRADLE_PROJECT_nexusUsername }}
           ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.ORG_GRADLE_PROJECT_nexusPassword }}
