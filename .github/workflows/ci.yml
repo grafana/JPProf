@@ -46,7 +46,7 @@ jobs:
         with:
           arguments: publishToSonatype closeAndReleaseStagingRepository
         env:
-          ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.ORG_GRADLE_PROJECT_nexusUsername }}
-          ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.ORG_GRADLE_PROJECT_nexusPassword }}
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_signingKey }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingPassword }}
+          ORG_GRADLE_PROJECT_NEXUSUSERNAME: ${{ secrets.ORG_GRADLE_PROJECT_NEXUSUSERNAME }}
+          ORG_GRADLE_PROJECT_NEXUSPASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_NEXUSPASSWORD }}
+          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGKEY }}
+          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD }}
