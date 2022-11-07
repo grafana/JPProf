@@ -92,6 +92,11 @@ publishing {
                         name = 'Cyril Tovena'
                         email = 'cyril.tovena@grafana.com'
                     }
+                    developer {
+                        id = 'cristiangreco'
+                        name = 'Cristian Greco'
+                        email = 'cristian.greco@grafana.com'
+                    }
                 }
                 scm {
                     connection = 'scm:git:git://github.com/grafana/jpprof.git'
@@ -113,5 +118,9 @@ publishing {
 }
 
 signing {
+    def signingKey = project.findProperty("signingKey")
+    def signingPassword = project.findProperty("signingPassword")
+
+    useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications.shadow
 }
