@@ -109,8 +109,8 @@ publishing {
     repositories {
         maven {
             credentials {
-                username project.findProperty('nexusUsername')
-                password project.findProperty('nexusPassword')
+                username System.getenv('ORG_GRADLE_PROJECT_NEXUSUSERNAME')
+                password System.getenv('ORG_GRADLE_PROJECT_NEXUSPASSWORD')
             }
             url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
         }
@@ -118,8 +118,8 @@ publishing {
 }
 
 signing {
-    def signingKey = project.findProperty("signingKey")
-    def signingPassword = project.findProperty("signingPassword")
+    def signingKey = System.getenv('ORG_GRADLE_PROJECT_SIGNINGKEY')
+    def signingPassword = System.getenv('ORG_GRADLE_PROJECT_SIGNINGPASSWORD')
 
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications.shadow
