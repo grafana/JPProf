@@ -19,7 +19,7 @@ import one.profiler.Events;
  */
 public class CPUProfiler {
     private static final File tmpDir;
-    private static final String nativeLibPath;
+    private static String nativeLibPath;
 
     static {
         try {
@@ -56,10 +56,30 @@ public class CPUProfiler {
      * a tmp path, and returns the absolute path.
      */
     private static String copyLibrary() throws Exception {
-        String osName = System.getProperty("os.name").toLowerCase();
-        String osArch = System.getProperty("os.arch").toLowerCase();
 
         String embeddedLibPrefix = "/async-profiler-libs/libasyncProfiler";
+        String embeddedLibSuffix = getLibrarySuffix();
+
+        InputStream is = CPUProfiler.class.getResourceAsStream(embeddedLibPrefix + embeddedLibSuffix);
+        if (is == null) {
+            return System.getProperty("user.dir") + "/async-profiler-2.8.3/" + "libasyncProfiler"
+                    + getLibrarySuffix();
+        }
+
+        Path libCopyPath = new File(tmpDir, "libasyncProfiler.so").toPath().toAbsolutePath();
+        Files.copy(is, libCopyPath, StandardCopyOption.REPLACE_EXISTING);
+        return libCopyPath.toString();
+    }
+
+    /**
+     * Returns the library suffix for the current platform.
+     *
+     * @return the library suffix depending on the current platform
+     * @throws Exception
+     */
+    private static String getLibrarySuffix() throws Exception {
+        String osName = System.getProperty("os.name").toLowerCase();
+        String osArch = System.getProperty("os.arch").toLowerCase();
         String embeddedLibSuffix = "";
 
         switch (osName) {
@@ -93,15 +113,7 @@ public class CPUProfiler {
             default:
                 throw new Exception("Unsupported OS: " + osName);
         }
-
-        InputStream is = CPUProfiler.class.getResourceAsStream(embeddedLibPrefix + embeddedLibSuffix);
-        if (is == null) {
-            throw new Exception("native lib not found");
-        }
-
-        Path libCopyPath = new File(tmpDir, "libasyncProfiler.so").toPath().toAbsolutePath();
-        Files.copy(is, libCopyPath, StandardCopyOption.REPLACE_EXISTING);
-        return libCopyPath.toString();
+        return embeddedLibSuffix;
     }
 
     private static String buildStartCommand(String dst) {
