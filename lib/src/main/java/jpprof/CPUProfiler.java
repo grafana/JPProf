@@ -19,7 +19,7 @@ import one.profiler.Events;
  */
 public class CPUProfiler {
     private static final File tmpDir;
-    private static String nativeLibPath;
+    private static final String nativeLibPath;
 
     static {
         try {
