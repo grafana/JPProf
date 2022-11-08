@@ -6,16 +6,15 @@ package jpprof;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.zip.GZIPOutputStream;
-
-import one.jfr.JfrReader;
-import one.profiler.*;
+import java.io.*;
+import java.time.Duration;
 
 public class LibraryTest {
     @Test
-    public void TestJFR() {
-
+    public void TestPProf() throws Exception {
+        File file = File.createTempFile("abc", ".tmp");
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            CPUProfiler.start(Duration.ofSeconds(5), fos);
+        }
     }
 }

@@ -67,6 +67,7 @@ public class jfr2pprof {
     public static final int PROFILE_STRING_TABLE = 6;
     public static final int PROFILE_TIME_NANOS = 9;
     public static final int PROFILE_DURATION_NANOS = 10;
+    public static final int PROFILE_PERIOD_TYPE = 11;
     public static final int PROFILE_COMMENT = 13;
     public static final int PROFILE_DEFAULT_SAMPLE_TYPE = 14;
 
@@ -116,7 +117,6 @@ public class jfr2pprof {
                 .field(PROFILE_COMMENT, stringId++);
 
         final Proto sampleType = new Proto(100);
-
         profile.field(PROFILE_STRING_TABLE, "cpu".getBytes(StandardCharsets.UTF_8));
         sampleType.field(VALUETYPE_TYPE, stringId++);
 
@@ -124,6 +124,7 @@ public class jfr2pprof {
         sampleType.field(VALUETYPE_UNIT, stringId++);
 
         profile.field(PROFILE_SAMPLE_TYPE, sampleType);
+        profile.field(PROFILE_PERIOD_TYPE, sampleType);
 
         final List<ExecutionSample> jfrSamples = reader.readAllEvents(ExecutionSample.class);
         final Dictionary<StackTrace> stackTraces = reader.stackTraces;
