@@ -16,6 +16,12 @@ def jpprofVersion = project.properties['jpprof_version']
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
 }
 
 java {
@@ -29,8 +35,14 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:31.0.1-jre'
-    implementation files('async-profiler-2.8.3/async-profiler.jar')
-    implementation files('async-profiler-2.8.3/converter.jar')
+    implementation('me.bechberger:ap-loader:2.8.3-all-SNAPSHOT') {
+        changing = true
+    }
+}
+
+configurations.all {
+    resolutionStrategy.cacheDynamicVersionsFor 4, 'hours'
+    resolutionStrategy.cacheChangingModulesFor 4, 'seconds'
 }
 
 tasks.withType(Test) {
@@ -49,11 +61,6 @@ testing {
 
 shadowJar {
     exclude '**.html'
-
-    from("async-profiler-2.8.3") {
-        include "**.so"
-        into "async-profiler-libs"
-    }
 
     archiveBaseName.set('jpprof')
     archiveClassifier.set('')
