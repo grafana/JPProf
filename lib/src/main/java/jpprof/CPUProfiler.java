@@ -116,10 +116,10 @@ public class CPUProfiler {
         return embeddedLibSuffix;
     }
 
-    private static String buildStartCommand(String dst) {
+    public static String buildStartCommand(String dst) {
         StringBuilder sb = new StringBuilder();
         sb.append("start,event=").append(Events.CPU);
-        sb.append(",interval=").append(10);
+        sb.append(",interval=").append(10_000_000);
         sb.append(",file=").append(dst).append(",jfr");
         return sb.toString();
     }

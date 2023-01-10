@@ -17,4 +17,12 @@ public class LibraryTest {
             CPUProfiler.start(Duration.ofSeconds(5), fos);
         }
     }
+
+    @Test
+    public void TestBuildCommand() {
+        // See
+        // https://github.com/jvm-profiling-tools/async-profiler/blob/master/src/arguments.cpp#L52-L111
+        String out = CPUProfiler.buildStartCommand("foo");
+        assertEquals("start,event=cpu,interval=10000000,file=foo,jfr", out);
+    }
 }
